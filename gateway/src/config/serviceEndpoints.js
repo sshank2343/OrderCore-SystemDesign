@@ -15,7 +15,7 @@ const ROUTE_TO_SERVICE_MAP = [
     { pathPrefix: '/api/orders', serviceName: 'order-service' },
 ];
 
-function getAllRoutableService() {
+function getAllRoutableServices() {
     // Used by proxyRoutes.js to build one proxy middleware per entry,
     // and by healthCheckPoller.js to know which services to ping.
     return ROUTE_TO_SERVICE_MAP.map((entry) => ({
@@ -25,4 +25,4 @@ function getAllRoutableService() {
     }))   
 }
 
-module.exports = { getAllRoutableService }
+module.exports = { getAllRoutableServices }
