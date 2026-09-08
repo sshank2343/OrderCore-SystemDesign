@@ -17,7 +17,7 @@ function startTracingForService(serviceName) {
     const sdk = new NodeSDK({
         serviceName,
         traceExporter,
-        instrumentations:[getNodeAutoInstrumentations]
+        instrumentations:[getNodeAutoInstrumentations()]
     });
     sdk.start();
 
