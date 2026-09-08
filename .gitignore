@@ -1,0 +1,35 @@
+# Node.js & npm
+node_modules/
+npm-debug.log*
+.yarn-integrity
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE & editor folders
+.vscode/
+.idea/
+
+# Build outputs
+/dist/
+build/
+
+# Coverage reports
+coverage/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Misc
+*.swp

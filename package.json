@@ -1,0 +1,21 @@
+{
+  "name": "ordercore",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Microservices e-commerce backend demonstrating production system design patterns",
+  "workspaces": [
+    "shared",
+    "gateway",
+    "services/auth-service",
+    "services/catalog-service",
+    "services/order-service",
+    "services/payment-service"
+  ],
+  "scripts": {
+    "dev:gateway": "npm run dev --workspace=gateway",
+    "dev:auth": "npm run dev --workspace=auth-service",
+    "dev:catalog": "npm run dev --workspace=catalog-service",
+    "dev:order": "npm run dev --workspace=order-service",
+    "dev:payment": "npm run dev --workspace=payment-service"
+  }
+}
