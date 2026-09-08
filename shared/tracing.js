@@ -8,21 +8,23 @@ const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 
-
 function startTracingForService(serviceName) {
-    const traceExporter = new OTLPTraceExporter({
-        url: process.env.JAEGER_ENDPOINT || 'http://localhost:4138/v1/traces',
-    });
+  const traceExporter = new OTLPTraceExporter({
+    url: process.env.JAEGER_ENDPOINT || 'http://localhost:4318/v1/traces',
+  });
 
-    const sdk = new NodeSDK({
-        serviceName,
-        traceExporter,
-        instrumentations:[getNodeAutoInstrumentations()]
-    });
-    sdk.start();
+  const sdk = new NodeSDK({
+    serviceName,
+    traceExporter,
+    instrumentations: [getNodeAutoInstrumentations()],
+  });
 
-    process.on('SIGTERM', () => sdk.shutdown().finally(()=> process.exit(0)));
-    return sdk;
+  sdk.start();
+
+  // Ensure traces are flushed before the process exits (e.g. on Ctrl+C)
+  process.on('SIGTERM', () => sdk.shutdown().finally(() => process.exit(0)));
+
+  return sdk;
 }
 
-module.exports= {startTracingForService}
+module.exports = { startTracingForService };

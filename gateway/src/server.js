@@ -22,7 +22,6 @@ const { createServiceLogger } = require('../../shared/logger');
 const logger = createServiceLogger('gateway');
 const app = express();
 
-app.use(express.json());
 
 // Rate limiting applies to every request BEFORE it's routed anywhere.  → [Rate Limiting]
 app.use(rateLimiterMiddleware);

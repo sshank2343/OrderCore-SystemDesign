@@ -5,25 +5,24 @@
 // (look up a service by name, get back its current address) using env-driven config,
 // so the rest of the codebase (gateway, order-service) never hardcodes a URL directly.
 
-
-const SERVICE_PORT_MAP={
-    'auth-service': process.env.AUTH_SERVICE_PORT,
-    'catalog-service': process.env.CATALOG_SERVICE_PORT,
-    'order-service': process.env.ORDER_SERVICE_PORT,
-    'payment-service': process.env.PAYMENT_SERVICE_PORT
+const SERVICE_PORT_MAP = {
+  'auth-service': process.env.AUTH_SERVICE_PORT,
+  'catalog-service': process.env.CATALOG_SERVICE_PORT,
+  'order-service': process.env.ORDER_SERVICE_PORT,
+  'payment-service': process.env.PAYMENT_SERVICE_PORT,
 };
 
 function resolveServiceBaseUrl(serviceName) {
-    const port = SERVICE_PORT_MAP[serviceName];
+  const port = SERVICE_PORT_MAP[serviceName];
 
-    if(!port){
-        throw new Error(
-            `serviceRegistry: no known address for "${serviceName}".`+
-            `Registered services: ${Object.keys(SERVICE_PORT_MAP).join(',')}`
-        );
-    }
+  if (!port) {
+    throw new Error(
+      `serviceRegistry: no known address for "${serviceName}". ` +
+      `Registered services: ${Object.keys(SERVICE_PORT_MAP).join(', ')}`
+    );
+  }
 
-    return `http://localhost:${port}`;
+  return `http://127.0.0.1:${port}`;
 }
 
-module.exports = { resolveServiceBaseUrl}
+module.exports = { resolveServiceBaseUrl };
