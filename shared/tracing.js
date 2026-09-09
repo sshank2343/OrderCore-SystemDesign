@@ -16,7 +16,11 @@ function startTracingForService(serviceName) {
   const sdk = new NodeSDK({
     serviceName,
     traceExporter,
-    instrumentations: [getNodeAutoInstrumentations()],
+    instrumentations: [
+      getNodeAutoInstrumentations({
+        '@opentelemetry/instrumentation-mongodb': { enabled: false },
+      }),
+    ],
   });
 
   sdk.start();
