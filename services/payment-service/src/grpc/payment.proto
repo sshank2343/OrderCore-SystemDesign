@@ -1,0 +1,30 @@
+// services/order-service/src/grpc/payment.proto
+// Shared contract between order-service (client) and payment-service (server). This file is COPIED into payment-service too (services/payment-service/src/grpc/ isn't a folder we made yet — payment-service will get its own copy of this exact file, since in real systems each service's build only depends on the .proto contract, not on the other service's source code).
+// → [REST vs RPC]
+
+
+syntax = "proto3";
+
+package payment;
+
+service PaymentService {
+    // A single RPC call, defined with explicit input/output message TYPES — contrast with REST where a POST body is "whatever JSON shape the docs say," unenforced by the language/tooling itself.
+
+    rpc ProcessPayment (ProcessPaymentRequest) returns (ProcessPaymentResponse);
+
+}
+
+message ProcessPaymentRequest {
+    string idempotency_key = 1;
+    int32 order_id = 2;
+    int32 amount_in_cents = 3;
+    int32 user_id = 4;
+}
+
+messqage ProcessPaymentResponse {
+    bool success = 1;
+    string payment_id = 2;
+    string status = 3;
+    string error_message = 4;
+    
+}
