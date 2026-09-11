@@ -5,6 +5,7 @@ const {
   insertNewProduct,
   findAllProducts,
   findProductById,
+  decrementProductStock,
 } = require('../models/product.model');
 const { createServiceLogger } = require('shared/logger')
 
@@ -52,5 +53,32 @@ async function getProductById(req,res) {
         return res.status(500).json({error:'Internal Server error'});
     }
 }
+async function decrementStockForProduct(req, res) {
+  try {
+    const { quantity } = req.body;
 
-module.exports = { createProduct, listAllProducts, getProductById };
+    if (!quantity || quantity <= 0) {
+      return res.status(400).json({ error: 'quantity must be a positive number' });
+    }
+
+    const updatedProduct = await decrementProductStock(req.params.id, quantity);
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    if (updatedProduct.stockQuantity < 0) {
+      // Stock went negative — this is exactly the kind of failure
+      // createOrderWithInventoryTransaction.js needs to catch and compensate for.
+      return res.status(409).json({ error: 'Insufficient stock' });
+    }
+
+    logger.info(`Stock decremented for product ${req.params.id}: -${quantity}`);
+    return res.status(200).json({ product: updatedProduct });
+  } catch (err) {
+    logger.error(`decrementStockForProduct failed: ${err.message}`);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+module.exports = { createProduct, listAllProducts, getProductById, decrementStockForProduct };
